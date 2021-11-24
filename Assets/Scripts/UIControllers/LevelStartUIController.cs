@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class LevelStartUIController : UIElement
 {
+    public GameObject TapToStartText;
     public override void Initialize()
     {
         base.Initialize();
-        GameController.Instance.OnNewLevelLoaded.AddListener(Activate);
-        GameController.Instance.OnGameStarted.AddListener(Deactivate);
-    }
 
+        if (!GameController.Instance.AutoStart)
+        {
+            TapToStartText.SetActive(true);
+        }
+
+    }
     private void Update()
     {
-        if (isActive)
+        if (GameController.IsGameStarted && TapToStartText.activeInHierarchy)
         {
-#if UNITY_EDITOR
-
-            if (Input.GetMouseButtonDown(0)) GameController.Instance.StartGame();
-#else
-       if(Input.touchCount>0 && Input.GetTouch(0).phase==TouchPhase.Began) GameController.Instance.StartGame();
-#endif
-
+            TapToStartText.SetActive(false);
         }
     }
 }

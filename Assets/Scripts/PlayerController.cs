@@ -1,95 +1,91 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("VECTORS")]
-    public Vector3 moveVector;
-    public Vector3 lastMove;
-    [Header("STATS")]
-    [Space]
-    [Range(0f,20f)]public float speed = 8f;
-    [Range(0f, 20f)] public float jumpForce = 8f;
-    [Range(0f, 20f)] public float gravity = 25f;
-    [Range(0f, 20f)] public float verticalVelocity;
-    [Range(0f, 20f)] public float dashSpeed;
-    [Range(0f, 20f)] public float dashTime;
-    [Space]
-    [Header("COMPONENT")]
-    public CharacterController controller;
+    public Camera Camera;
+    public GameObject FixedPoint;
+    public GameObject CapturedObject;
+    public GameObject Obstacles;
 
-    GameController _gameController;
 
+    public int CekmeKuvveti;
+   
+    public Vector3 NesneyiDondur;
+    public bool NesneAktif;
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
-        _gameController = GameController.request();
+        Camera = Camera.main;
+        Obstacles = GameObject.FindWithTag("Obstacles");
+
+      
+        NesneyiDondur = Vector3.zero;
+        NesneAktif = false;
+       
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) { StartCoroutine(Dasher()); }
-        else if (Input.GetKeyDown(KeyCode.O)) { _gameController.LostGame(); }
-        else if (Input.GetKeyDown(KeyCode.P)) { _gameController.WinGame(); }
-
-
-
-        moveVector = Vector3.zero;
-        moveVector.x = Input.GetAxis("Horizontal");
-        moveVector.z = Input.GetAxis("Vertical");
-
-        if (controller.isGrounded)
+        if (Input.GetMouseButtonDown(0) && !NesneAktif)
         {
-            verticalVelocity = -1;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                verticalVelocity = jumpForce;
-            }
-        }
-        else
-        {
-            verticalVelocity -= gravity * Time.deltaTime;
-            moveVector = lastMove;
+            NesneyiBul();
         }
 
-        moveVector.y = 0;
-        moveVector.Normalize();
-        moveVector *= speed;
-        moveVector.y = verticalVelocity;
+        if (Input.GetMouseButtonUp(0) && NesneAktif)
+        {
+            NesneyiBirak();
+        }
 
-        controller.Move(moveVector * Time.deltaTime);
-        lastMove = moveVector;
+        NesneyiCek();
+
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+
+    void NesneyiBul()
     {
-        if (!controller.isGrounded && hit.normal.y < 0.1f)
+        RaycastHit hit;
+        Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 200.0f))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            Debug.DrawLine(ray.origin, hit.point, Color.red, 0.1f);
+            if (hit.collider.CompareTag("Obstacles"))
             {
-                Debug.DrawRay(hit.point, hit.normal, Color.red, 1.25f);
-                verticalVelocity = jumpForce;
-                moveVector = hit.normal * speed;
+                CapturedObject = hit.collider.gameObject;
+                var CapturedRb = CapturedObject.GetComponent<Rigidbody>();
+                CapturedObject.transform.parent = FixedPoint.transform;
+                CapturedObject.transform.LookAt(FixedPoint.transform.position);
+                CapturedRb.constraints = RigidbodyConstraints.FreezeAll;
+                NesneAktif = true;
             }
         }
     }
 
-
-    IEnumerator Dasher()
+    void NesneyiCek()
     {
-        
-        float startTime = Time.deltaTime;
-
-        while (Time.time < startTime + dashTime)
+        if (NesneAktif)
         {
-            controller.Move(moveVector * dashSpeed * Time.deltaTime);
-            yield return null;
+            CapturedObject.transform.position = Vector3.Lerp(CapturedObject.transform.position,
+                FixedPoint.transform.position, CekmeKuvveti * Time.deltaTime);
+            float xEkseni = Random.Range(-1.5f, 1.5f);
+            float yEkseni = Random.Range(-1.5f, 1.5f);
+            float zEkseni = Random.Range(-1.5f, 1.5f);
+
+            NesneyiDondur = new Vector3(xEkseni, yEkseni, zEkseni);
+
+            CapturedObject.transform.Rotate(NesneyiDondur);
         }
     }
 
-    
+    void NesneyiBirak()
+    {
+        var CapturedRb = CapturedObject.GetComponent<Rigidbody>();
+        CapturedRb.transform.parent = null;
+        CapturedRb.constraints = RigidbodyConstraints.None;
+        NesneAktif = false;
+    }
+
+   
 }

@@ -8,55 +8,36 @@ public class LevelEndUIController : UIElement
     public Button LevelFailButton;
     public Button LevelWinButton;
 
-
     public override void Initialize()
     {
         base.Initialize();
-        GameController.OnGameLost.AddListener(LevelFailed);
         GameController.OnGameWin.AddListener(LevelWin);
-    }
+        GameController.OnGameLost.AddListener(LevelFailed);
 
-    public override void SetActive(bool activate)
-    {
-        base.SetActive(activate);
-
-        if (!activate)
-        {
-            LevelFailButton.gameObject.SetActive(false);
-            LevelWinButton.gameObject.SetActive(false);
-        }
+        LevelWinButton.onClick.AddListener(NextLevel);
+        LevelFailButton.onClick.AddListener(RestartLevel);
     }
 
     public void LevelWin()
     {
-        Activate();
-        LevelWinButton.gameObject.SetActive(true);
+        LevelWinButton.transform.parent.gameObject.SetActive(true);
     }
-
 
     public void LevelFailed()
     {
-        Activate();
-        LevelFailButton.gameObject.SetActive(true);
+        LevelFailButton.transform.parent.gameObject.SetActive(true);
     }
 
     public void NextLevel()
     {
-        Deactivate();
+        LevelWinButton.transform.parent.gameObject.SetActive(false);
         GameController.IncreaseLevel();
     }
 
     public void RestartLevel()
     {
-        Deactivate();
+        LevelFailButton.transform.parent.gameObject.SetActive(false);
         GameController.ReloadLevel();
 
-    }
-
-    public override void PrepareForBuild()
-    {
-        base.PrepareForBuild();
-        LevelFailButton.gameObject.SetActive(false);
-        LevelWinButton.gameObject.SetActive(false);
     }
 }

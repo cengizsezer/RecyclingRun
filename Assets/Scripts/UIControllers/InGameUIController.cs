@@ -7,22 +7,19 @@ using UnityEngine.UI;
 
 public class InGameUIController : UIElement
 {
-    public Button MenuButton;
     public override void Initialize()
     {
         base.Initialize();
 
-        GameController.OnGameStarted.AddListener(Activate);
-        GameController.OnGameLost.AddListener(Deactivate);
-        GameController.OnGameWin.AddListener(Deactivate);
-
-        if (!GameController.IsGameStarted)
+        if (GameController.IsGameStarted)
         {
-            Activate();
-            MenuButton.onClick.AddListener(GameController.Pause);
-        }
-        
+            gameObject.SetActive(true);
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(true);
 
+            }
+        }
 
     }
 }
