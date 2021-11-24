@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5491968370584691099}
   - component: {fileID: 5103833829569340315}
   - component: {fileID: 7984055597515610149}
+  - component: {fileID: 4106610385239819195}
   m_Layer: 0
   m_Name: ToiletPaper
   m_TagString: Obstacles
@@ -62,6 +63,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4106610385239819195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5491968370584691108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631799770f009d2419872443e80f84c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObstacleType: 1
 --- !u!1 &5491968371936990507
 GameObject:
   m_ObjectHideFlags: 0

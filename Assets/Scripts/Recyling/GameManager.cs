@@ -5,29 +5,25 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public List<GameObject> ActiveObjectList;
-    public int NumberOfFallingObjects;
     GameController gameController;
+    PlayerController playerController;
 
 
     private void Start()
     {
         gameController = GameController.request();
+        playerController = PlayerController.request();
         ActiveObjectList = new List<GameObject>();
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if(other.gameObject.tag=="Obstacles")
+        if(ActiveObjectList.Count>=20 && playerController.NumberOfFallingObjects<5)
         {
-            NumberOfFallingObjects++;
-
-            if(NumberOfFallingObjects>=5)
-            {
-                gameController.LostGame();
-                Cursor.lockState = CursorLockMode.None;
-            }
-
+            gameController.WinGame();
         }
     }
+
+
+
 }

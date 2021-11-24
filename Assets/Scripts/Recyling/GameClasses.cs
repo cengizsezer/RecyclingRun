@@ -15,3 +15,9 @@ public enum WasteType
     Plastic,
     Organic
 }
+
+public enum Tag
+{
+    Blank,
+    Obstacles
+}

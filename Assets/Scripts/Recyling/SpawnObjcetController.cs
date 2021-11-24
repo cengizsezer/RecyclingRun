@@ -57,6 +57,8 @@ public class SpawnObjcetController : MonoBehaviour
 
     public void SpawnObject()
     {
+        if (gameController.IsGameStarted == false) { return; }
+
         GameObject obj = null;
         Vector3 pos = spawnPosition;
 
