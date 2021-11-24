@@ -39,6 +39,12 @@ public class SpawnObjcetController : MonoBehaviour
         if(NumberOfActiveObjects>=MaxObjcetSpwan)
         {
             StopSpawning = true;
+
+            if(StopSpawning==true && gameController.IsGameStarted==false)
+            {
+                gameController.WinGame();
+            }
+           
         }
     }
 
@@ -84,6 +90,7 @@ public class SpawnObjcetController : MonoBehaviour
         {
 
             obj = Instantiate(OrganicObjcet, pos, OrganicObjcet.transform.rotation);
+            obj.transform.Rotate(new Vector3(0, 180, 0));
             gameManager.ActiveObjectList.Add(obj);
             if (StopSpawning)
             {

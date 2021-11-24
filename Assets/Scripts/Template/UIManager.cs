@@ -21,18 +21,4 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-#if UNITY_EDITOR
-    [Button("Prepare For Build")]
-    public void PrepareForBuild()
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            UIElement uiElement = transform.GetChild(i).GetComponent<UIElement>();
-            if (uiElement) uiElement.PrepareForBuild();
-        }
-
-        UnityEditor.EditorUtility.SetDirty(gameObject);
-
-    }
-#endif
 }
