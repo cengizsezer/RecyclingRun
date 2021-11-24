@@ -20,7 +20,7 @@ public class SpawnObjcetController : MonoBehaviour
 
     [SerializeField] float SpawnTime = 0f;
     [SerializeField] float Delay = 0f;
-    [SerializeField] int MaxObjcetSpwan = 50;
+    [SerializeField] int MaxObjcetSpwan = 20;
 
     void Start()
     {
@@ -29,12 +29,17 @@ public class SpawnObjcetController : MonoBehaviour
         gameManager = GameManager.request();
         spawnPosition = transform.position;
 
-        InvokeRepeating(nameof(SpawnObject), SpawnTime, Delay);
+      
         
+            InvokeRepeating(nameof(SpawnObject), SpawnTime, Delay);
+        
+
+
     }
 
     private void Update()
     {
+
         int NumberOfActiveObjects = gameManager.ActiveObjectList.Count;
         if(NumberOfActiveObjects>=MaxObjcetSpwan)
         {
@@ -43,9 +48,11 @@ public class SpawnObjcetController : MonoBehaviour
             if(StopSpawning==true && gameController.IsGameStarted==false)
             {
                 gameController.WinGame();
+                Cursor.lockState = CursorLockMode.None;
             }
            
         }
+      
     }
 
     public void SpawnObject()

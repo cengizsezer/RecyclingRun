@@ -1477,12 +1477,12 @@ PrefabInstance:
     - target: {fileID: 2053865126368431770, guid: 5a61ca5592437d841b78fff1631f5948,
         type: 3}
       propertyPath: Delay
-      value: 14
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2053865126368431770, guid: 5a61ca5592437d841b78fff1631f5948,
         type: 3}
       propertyPath: SpawnTime
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2053865126368431770, guid: 5a61ca5592437d841b78fff1631f5948,
         type: 3}

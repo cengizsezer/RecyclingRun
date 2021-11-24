@@ -7,17 +7,23 @@ public class MouseLook : MonoBehaviour
     public float MouseSensitivity;
     public float xRotation = 0f;
     public Transform BodyTransform;
+    GameController gameController;
 
 
     private void Start()
     {
+        gameController = GameController.request();
         xRotation = 0f;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
-        MouseInput();
+        if(gameController.IsGameStarted)
+        {
+            MouseInput();
+        }
+        
     }
 
     void MouseInput()

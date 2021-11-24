@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
             if(NumberOfFallingObjects>=5)
             {
                 gameController.LostGame();
+                Cursor.lockState = CursorLockMode.None;
             }
 
         }
